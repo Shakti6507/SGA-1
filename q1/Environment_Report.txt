@@ -1,0 +1,31 @@
+Q1: Linux Environment Verification
+
+Commands executed and outputs:
+
+1. whoami
+   Output: codespace
+
+2. groups
+   Output: codespace pipx python oryx golang docker sdkman rvm php conda nvs nvm hugo ssh
+
+3. echo "$SHELL"
+   Output: /bin/bash
+
+4. pwd
+   Output: /workspaces/SGA-1/q1
+
+5. ls -ls
+   Output: total 0
+
+6. curl -s --max-time 10 https://youtube.com > /dev/null && echo "Network: youtube.com reachable"
+   Output: Network: youtube.com reachable
+
+7. umask
+   Output: 0022
+
+Observations:
+- The current user is codespace and is a member of several groups used for development tools.
+- The current shell is /bin/bash and the working directory is /workspaces/SGA-1/q1.
+- The workspace contains no visible files at the time of listing.
+- Network connectivity to youtube.com is confirmed.
+- The default umask is 0022, which means new files are created with permissions that allow user read/write and group/other read.

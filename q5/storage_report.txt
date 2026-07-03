@@ -1,0 +1,39 @@
+Q5: Storage Health Assessment and Documentation
+
+Commands executed and outputs:
+
+1. lsblk
+   Output: shows block devices and mount points, including loop devices, sda, sdb, and sdc.
+
+2. mount | head -5
+   Output: lists mounted file systems, including overlay, proc, tmpfs, devpts, and sysfs.
+
+3. df -h
+   Output:
+   overlay          32G  9.6G   21G  33% /
+   tmpfs            64M     0   64M   0% /dev
+   shm              64M     0   64M   0% /dev/shm
+   /dev/root        29G   23G  6.1G  80% /vscode
+   /dev/sdb1        44G  2.6G   40G   7% /tmp
+   /dev/loop4       32G  9.6G   21G  33% /workspaces
+
+4. df -i
+   Output:
+   overlay        2097152 203059 1894093   10% /
+   tmpfs          1016900    213 1016687    1% /dev
+   shm            1016900      1 1016899    1% /dev/shm
+   /dev/root      3870720 239865 3630855    7% /vscode
+   /dev/sdb1      2949120     37 2949083    1% /tmp
+   /dev/loop4     2097152 203059 1894093   10% /workspaces
+
+Storage health observations:
+- /dev/root at /vscode is the largest mounted root storage with 80% usage, which is moderately high and may require monitoring.
+- The overlay filesystem is 33% used, reflecting the container overlay workload.
+- The /tmp filesystem has low usage at 7%, and inode usage is also low across all mounted filesystems.
+- Inode availability is healthy, with no filesystem near exhaustion.
+
+Recommendations:
+- Monitor /dev/root usage and clean up unnecessary files or logs to prevent reaching critical capacity.
+- Keep /tmp and overlay usage under review, but current utilization is safe.
+- Consider archiving or deleting old workspace data if /vscode storage grows further.
+

@@ -1,0 +1,47 @@
+Q4: File Access and I/O Investigation
+
+Commands executed and outputs:
+
+1. rm -f app.log stdout.txt stderr.txt combined.txt
+   Removed previous test files so the investigation starts with a clean workspace.
+
+2. echo "sample log line" > app.log
+   Created an application log file with sample content.
+
+3. lsof | head -n 20
+   Output: a list of the first 20 open file entries from the system.
+
+4. exec 3<app.log
+   Opened app.log on file descriptor 3 for reading.
+
+5. lsof -p $$ | grep app.log
+   Output: shows bash process has file descriptor 3 open for app.log.
+
+6. ls -l /proc/$$/fd | grep app.log
+   Output: 3 -> /workspaces/SGA-1/q4/app.log
+
+7. ls -l /proc/$$/fd
+   Output: lists file descriptors 0,1,2,255,3,6 and their link targets.
+
+8. ls -l > stdout.txt
+   Redirected standard output into stdout.txt.
+
+9. ls /not_a_real_path 2> stderr.txt
+   Redirected standard error for a failing ls command into stderr.txt.
+
+10. (ls -l && ls /not_a_real_path) > combined.txt 2>&1
+    Redirected both stdout and stderr into a single combined output file.
+
+11. ulimit -a
+    Output: displays current shell resource limits such as open files, stack size, and memory.
+
+12. exec 3<&-
+    Closed file descriptor 3 after inspection.
+
+Observations:
+- The bash process had file descriptor 3 open for the app.log file, showing how shells can manage additional file descriptors.
+- The /proc/$$/fd output confirms fd 3 points to /workspaces/SGA-1/q4/app.log.
+- Standard output redirection saved normal command output to stdout.txt, while standard error redirection saved the failure message to stderr.txt.
+- Combined redirection captured both output streams in combined.txt.
+- Resource limits like open files (524288) and stack size (8192 kbytes) are available from ulimit.
+- This investigation illustrates how Linux uses file descriptors and redirection to manage I/O for processes.
